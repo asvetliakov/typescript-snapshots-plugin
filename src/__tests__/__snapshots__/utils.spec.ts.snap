@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getParentTestBlocks Returns last test block and all parent names 1`] = `
+"it(\\"test\\", () => {
+    expect(a).toMatchSnapshot();
+})"
+`;
+
+exports[`getParentTestBlocks Returns last test block and all parent names 2`] = `
+"it.only(\\"test2\\", () => {
+    expect(a).toMatchSnapshot();
+})"
+`;
+
+exports[`getParentTestBlocks Returns last test block and all parent names 3`] = `
+"it(\\"test2\\", () => {
+        expect(b).toMatchSnapshot();
+        // invalid
+        expect(c).toMatchSnapshot(
+    })"
+`;
+
+exports[`getParentTestBlocks Returns last test block and all parent names 4`] = `
+"it(\\"test2\\", () => {
+            expect(b).toMatchSnapshot();
+        })"
+`;
+
+exports[`getParentTestBlocks Returns last test block and all parent names 5`] = `
+"it(\\"test3\\", () => {
+            expect(b).toMatchSnapshot();
+        })"
+`;
+
+exports[`getParentTestBlocks Returns last test block and all parent names 6`] = `
+"it(\\"test1\\", () => {
+        expect(a).toMatchSnapshot();
+        expect(a).toMatchSnapshot();
+        expect(a).toMatchSnapshot();
+    })"
+`;
+
+exports[`parseSnapshotFile Returns snapshot definitions 1`] = `
+Array [
+  Object {
+    "length": 22,
+    "name": "abc",
+    "position": 9,
+    "snapshot": "abc",
+  },
+  Object {
+    "length": 53,
+    "name": "abc",
+    "position": 42,
+    "snapshot": "
+        abc,
+        def
+        ",
+  },
+  Object {
+    "length": 28,
+    "name": "bb",
+    "position": 106,
+    "snapshot": "abc",
+  },
+  Object {
+    "length": 19,
+    "name": "def",
+    "position": 145,
+    "snapshot": "",
+  },
+]
+`;
