@@ -49,7 +49,7 @@ List of test call identifiers, such as ```it()```, or ```describe()```, default:
 To pass your values, add them in tsconfig.json:
 ```json
     "plugins": [{
-        "name: "typescript-snapshots-plugin",
+        "name": "typescript-snapshots-plugin",
         "snapshotCallIdentifiers": [
             "toMatchSnapshot",
             "myMatchSnapshot"
