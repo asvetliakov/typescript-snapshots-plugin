@@ -20,6 +20,8 @@ Add to your tsconfig.json:
     }]
 ```
 
+**If your using VScode, tell it to use your local project TS version instead the VSCode bundled one**
+
 ### Configuration
 In most cases you must be OK with default configuration. If this doesn't work for you, plugin exposes two options:
 
