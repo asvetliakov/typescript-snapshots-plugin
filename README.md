@@ -15,8 +15,8 @@ Language service support for viewing/navigating to your test snapshots
 
 Add to your tsconfig.json:
 ```json
-    plugins: [{
-        name: "typescript-snapshots-plugin",
+    "plugins": [{
+        "name": "typescript-snapshots-plugin",
     }]
 ```
 
@@ -48,13 +48,13 @@ List of test call identifiers, such as ```it()```, or ```describe()```, default:
 
 To pass your values, add them in tsconfig.json:
 ```json
-    plugins: [{
-        name: "typescript-snapshots-plugin",
-        snapshotCallIdentifiers: [
+    "plugins": [{
+        "name: "typescript-snapshots-plugin",
+        "snapshotCallIdentifiers": [
             "toMatchSnapshot",
             "myMatchSnapshot"
         ],
-        testBlockIdentifiers: [
+        "testBlockIdentifiers": [
             ...
         ]
     }]
