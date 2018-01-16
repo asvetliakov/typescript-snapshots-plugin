@@ -32,7 +32,7 @@
     "jest": "^21.2.1",
     "mock-fs": "^4.4.2",
     "ts-jest": "^21.1.3",
-    "typescript": "^2.5.3"
+    "typescript": "^2.7.0-dev.20180113"
   },
   "jest": {
     "testEnvironment": "node",

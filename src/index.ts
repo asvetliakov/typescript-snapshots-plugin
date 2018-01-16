@@ -70,7 +70,15 @@ function init(modules: { typescript: typeof ts_module }) {
 
     function getExternalFiles(project: ts_module.server.Project): string[] {
         // Return snapshot file for each opened file, seems enough for our needs
-        const openFiles = project.projectService.openFiles.map(f => f.fileName).filter(f => !f.endsWith(".snap"));
+        let openFiles: ts_module.server.NormalizedPath[] = [];
+        if (typeof (project.projectService.openFiles as any).map === "function") {
+            // TS 2.6, openFiles is array of ScriptInfo
+            openFiles.push(...(project.projectService.openFiles as any as ts_module.server.ScriptInfo[]).map(f => f.fileName));
+        } else if (typeof project.projectService.openFiles.keys === "function") {
+            // TS 2.7, openFiles is Map of normalized paths (key is the full path, value is the project root path)
+            openFiles.push(...project.projectService.openFiles.keys() as any);
+        }
+        openFiles = openFiles.filter(f => !f.endsWith(".snap"));
         const externalFiles = openFiles.map(getSnapshotPathForFileName).filter(f => project.projectService.host.fileExists(f));
         return externalFiles;
     }

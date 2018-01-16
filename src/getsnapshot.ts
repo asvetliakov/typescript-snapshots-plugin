@@ -17,12 +17,15 @@ import { SnapshotCache } from "./snapshotcache";
  */
 export function tryGetSnapshotForPosition(
     ts: typeof ts_module,
-    sourceFile: ts_module.SourceFile,
+    sourceFile: ts_module.SourceFile | undefined,
     position: number,
     snapshotCache: SnapshotCache,
     snapshotCallIdentifiers: string[],
     testBlockIdentifiers: string[]
 ): SnapshotDefinition | undefined {
+    if (!sourceFile) {
+        return;
+    }
     try {
         const node = findNodeAtPosition(ts, sourceFile, position);
         if (node && isMatchingIdentifier(ts, node, snapshotCallIdentifiers)) {

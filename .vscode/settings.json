@@ -1,4 +1,5 @@
 {
     "runCurrentTest.run": "npm run --silent test -- ${relativeTestPath} --runTestsByPath --testNamePattern \"^${fullTestName}$\"",
-    "runCurrentTest.runAndUpdateSnapshots": "npm run --silent test -- -u ${relativeTestPath} --runTestsByPath --testNamePattern \"^${fullTestName}$\""
+    "runCurrentTest.runAndUpdateSnapshots": "npm run --silent test -- -u ${relativeTestPath} --runTestsByPath --testNamePattern \"^${fullTestName}$\"",
+    "typescript.tsdk": "node_modules/typescript/lib"
 }
