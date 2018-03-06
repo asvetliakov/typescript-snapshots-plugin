@@ -31,7 +31,7 @@ function init(modules: { typescript: typeof ts_module }) {
             const originalQuickInfo = oldLS.getQuickInfoAtPosition(fileName, position);
             const sourceFile = oldLS.getProgram().getSourceFile(fileName);
             const snapshotDef = tryGetSnapshotForPosition(ts, sourceFile, position, snapshotCache, snapshotCallIdentifiers, testBlockIdentifiers);
-            if (snapshotDef) {
+            if (snapshotDef && originalQuickInfo) {
                 originalQuickInfo.displayParts.push({
                     kind: "method",
                     text: "\n" + snapshotDef.snapshot
@@ -44,10 +44,14 @@ function init(modules: { typescript: typeof ts_module }) {
          * Go to definition
          */
         proxy.getDefinitionAtPosition = (fileName, position) => {
-            const prior = oldLS.getDefinitionAtPosition(fileName, position);
+            let prior = oldLS.getDefinitionAtPosition(fileName, position);
             const sourceFile = oldLS.getProgram().getSourceFile(fileName);
             const snapshotDef = tryGetSnapshotForPosition(ts, sourceFile, position, snapshotCache, snapshotCallIdentifiers, testBlockIdentifiers);
             if (snapshotDef) {
+                // LS can return undefined. Also need to preserve undefined in case if snapshot is not available
+                if (!prior) {
+                    prior = [];
+                }
                 prior.unshift({
                     fileName: getSnapshotPathForFileName(fileName),
                     name: snapshotDef.name,

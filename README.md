@@ -13,6 +13,8 @@ Language service support for viewing/navigating to your test snapshots
 
 ```npm install typescript-snapshots-plugin --save-dev```
 
+```yarn add typescript-snapshots-plugin --dev```
+
 Add to your tsconfig.json:
 ```json
     "plugins": [{
@@ -20,10 +22,10 @@ Add to your tsconfig.json:
     }]
 ```
 
-**If your using VScode, tell it to use your local project TS version instead the VSCode bundled one**
+**If you are using VScode, tell it to use your local project TS version instead the VSCode bundled one**
 
 ### Configuration
-In most cases you must be OK with default configuration. If this doesn't work for you, plugin exposes two options:
+In most cases you must be OK with default configuration. If it doesn't work for you, the plugin exposes two options:
 
 **snapshotCallIdentifiers**
 List of snapshot matching call identifiers, such as ```toMatchSnapshot()```, default:
