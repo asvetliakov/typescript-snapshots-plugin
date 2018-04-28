@@ -1,47 +1,7 @@
 import * as ts from "typescript";
 import { findNodeAtPosition, isMatchingCallExpression, isMatchingIdentifier, getParentTestBlocks, getCountOfIdentifiersInBlock, parseSnapshotFile } from "../utils";
+import { source } from "./testsource";
 
-const source = `
-it("test", () => {
-    expect(a).toMatchSnapshot();
-});
-
-it.only("test2", () => {
-    expect(a).toMatchSnapshot();
-});
-
-describe("a", () => {
-    it("test2", () => {
-        expect(b).toMatchSnapshot();
-        // invalid
-        expect(c).toMatchSnapshot(
-    });
-});
-
-describe();
-describe("test", () => {});
-it("test", () => {
-    expect(a).toBe(1);
-});
-
-describe("valid", () => {
-    it("test1", () => {
-        expect(a).toMatchSnapshot();
-        expect(a).toMatchSnapshot();
-        expect(a).toMatchSnapshot();
-    });
-
-    describe("inner", () => {
-        it("test2", () => {
-            expect(b).toMatchSnapshot();
-        });
-
-        it("test3", () => {
-            expect(b).toMatchSnapshot();
-        });
-    });
-});
-`;
 const file = ts.createSourceFile("a.ts", source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
 
 describe("findNodeAtPosition", () => {
@@ -131,21 +91,87 @@ describe("getParentTestBlocks", () => {
 describe("getCountOfIdentifiersInBlock", () => {
     it("Returns number of identifiers in given block", () => {
         let node = findNodeAtPosition(ts as any, file, ts.getPositionOfLineAndCharacter(file, 1, 1));
-        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 2, 29))).toBe(1);
-        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 2, 13))).toBe(0);
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 2, 29))).toEqual({
+            anonymousCalls: 1,
+            namedCalls: {},
+        });
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 2, 13))).toEqual({
+            anonymousCalls: 0,
+            namedCalls: {},
+        })
 
         node = findNodeAtPosition(ts as any, file, ts.getPositionOfLineAndCharacter(file, 10, 5));
-        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 12, 9))).toBe(1);
-        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 13, 17))).toBe(1);
-        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 13, 34))).toBe(2);
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 12, 9))).toEqual({
+            anonymousCalls: 1,
+            namedCalls: {},
+        });
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 13, 17))).toEqual({
+            anonymousCalls: 1,
+            namedCalls: {},
+        });
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 13, 34))).toEqual({
+            anonymousCalls: 2,
+            namedCalls: {},
+        });
 
         node = findNodeAtPosition(ts as any, file, ts.getPositionOfLineAndCharacter(file, 24, 5));
-        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 24, 23))).toBe(0);
-        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 25, 9))).toBe(0);
-        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 26, 9))).toBe(1);
-        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 27, 9))).toBe(2);
-        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 27, 18))).toBe(2);
-        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 28, 5))).toBe(3);
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 24, 23))).toEqual({
+            anonymousCalls: 0,
+            namedCalls: {},
+        });
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 25, 9))).toEqual({
+            anonymousCalls: 0,
+            namedCalls: {},
+        });
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 26, 9))).toEqual({
+            anonymousCalls: 1,
+            namedCalls: {},
+        });
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 27, 9))).toEqual({
+            anonymousCalls: 2,
+            namedCalls: {},
+        });
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 27, 18))).toEqual({
+            anonymousCalls: 2,
+            namedCalls: {},
+        });
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 28, 5))).toEqual({
+            anonymousCalls: 3,
+            namedCalls: {},
+        });
+
+
+        node = findNodeAtPosition(ts as any, file, ts.getPositionOfLineAndCharacter(file, 42, 5));
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 43, 21))).toEqual({
+            anonymousCalls: 1,
+            namedCalls: {},
+        });
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 44, 21))).toEqual({
+            anonymousCalls: 1,
+            namedCalls: {
+                custom: 1
+            },
+        });
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 46, 21))).toEqual({
+            anonymousCalls: 2,
+            namedCalls: {
+                custom: 2
+            },
+        });
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 49, 21))).toEqual({
+            anonymousCalls: 3,
+            namedCalls: {
+                custom: 3,
+                custom2: 1,
+            },
+        });
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 50, 21))).toEqual({
+            anonymousCalls: 3,
+            namedCalls: {
+                custom: 3,
+                custom2: 2,
+            },
+        });
     });
 });
 

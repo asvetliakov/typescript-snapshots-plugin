@@ -110,16 +110,33 @@ export function getParentTestBlocks(ts: typeof ts_module, sourceFile: ts.SourceF
  * @param lookupUntil
  * @returns
  */
-export function getCountOfIdentifiersInBlock(ts: typeof ts_module, block: ts_module.Node, identifiers: string[], lookupUntil: number): number {
-    let count = 0;
+export function getCountOfIdentifiersInBlock(
+    ts: typeof ts_module,
+    block: ts_module.Node,
+    identifiers: string[],
+    lookupUntil: number
+): { anonymousCalls: number; namedCalls: { [key: string]: number } } {
+    let anonymousCalls = 0;
+    const namedCalls: { [key: string]: number } = { };
     function visit(node: ts.Node): void {
-        if (ts.isIdentifier(node) && identifiers.indexOf(node.text) !== -1 && lookupUntil > node.getStart()) {
-            count++;
+        if (ts.isIdentifier(node) && identifiers.indexOf(node.text) !== -1 && lookupUntil >= node.getStart()) {
+            if (node.parent && node.parent.parent && ts.isCallExpression(node.parent.parent)) {
+                const customName = node.parent.parent.arguments[0];
+                if (customName && ts.isStringLiteralLike(customName)) {
+                    const snapshotName = customName.text;
+                    namedCalls[snapshotName] = namedCalls[snapshotName] ? namedCalls[snapshotName] + 1 : 1;
+                } else {
+                    anonymousCalls++;
+                }
+            }
         }
         ts.forEachChild(node, visit);
     }
     ts.forEachChild(block, visit);
-    return count;
+    return {
+        anonymousCalls,
+        namedCalls,
+    };
 }
 
 export interface SnapshotDefinition {

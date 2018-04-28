@@ -28,7 +28,7 @@ export function tryGetSnapshotForPosition(
     }
     try {
         const node = findNodeAtPosition(ts, sourceFile, position);
-        if (node && isMatchingIdentifier(ts, node, snapshotCallIdentifiers)) {
+        if (node && isMatchingIdentifier(ts, node, snapshotCallIdentifiers) && node.parent && node.parent.parent && ts.isCallExpression(node.parent.parent)) {
             const snapshotPath = getSnapshotPathForFileName(sourceFile.fileName);
 
             // avoid reading snapshot file until there will be real case for snapshot existing, i.e. blockInfo not undefined
@@ -37,7 +37,14 @@ export function tryGetSnapshotForPosition(
                 const snapshotBlocks = snapshotCache.parseSnapshot(snapshotPath);
                 const snapshotCallsInBlock = getCountOfIdentifiersInBlock(ts, blockInfo.lastNode, snapshotCallIdentifiers, node.getStart(sourceFile));
 
-                const snapshotName = blockInfo.blockNames.join(" ") + " " + (snapshotCallsInBlock + 1);
+                const customName = node.parent.parent.arguments[0] && ts.isStringLiteralLike(node.parent.parent.arguments[0]) ? node.parent.parent.arguments[0] : undefined;
+                // let snapshotName = blockInfo.blockNames.join(" ") + " " + (snapshotCallsInBlock + 1);
+                let snapshotName = blockInfo.blockNames.join(" ");
+                if (customName) {
+                    snapshotName += ": " + (customName as ts.StringLiteralLike).text + " " + snapshotCallsInBlock.namedCalls[(customName as ts.StringLiteralLike).text];
+                } else {
+                    snapshotName += " " + (snapshotCallsInBlock.anonymousCalls);
+                }
                 return snapshotBlocks.find(t => t.name === snapshotName);
             }
         }

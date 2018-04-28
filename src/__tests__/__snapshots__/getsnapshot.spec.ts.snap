@@ -1,0 +1,177 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 1`] = `
+Object {
+  "length": 38,
+  "name": "test 1",
+  "position": 0,
+  "snapshot": "
+    first test
+",
+}
+`;
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 2`] = `
+Object {
+  "length": 40,
+  "name": "test2 1",
+  "position": 41,
+  "snapshot": "
+    second test
+",
+}
+`;
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 3`] = `
+Object {
+  "length": 44,
+  "name": "a test2 1",
+  "position": 84,
+  "snapshot": "
+    a test2 first
+",
+}
+`;
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 4`] = `
+Object {
+  "length": 51,
+  "name": "valid test1 1",
+  "position": 131,
+  "snapshot": "
+    valid test first
+",
+}
+`;
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 5`] = `
+Object {
+  "length": 52,
+  "name": "valid test1 2",
+  "position": 185,
+  "snapshot": "
+    valid test second
+",
+}
+`;
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 6`] = `
+Object {
+  "length": 51,
+  "name": "valid test1 3",
+  "position": 240,
+  "snapshot": "
+    valid test third
+",
+}
+`;
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 7`] = `
+Object {
+  "length": 64,
+  "name": "valid inner test2 1",
+  "position": 294,
+  "snapshot": "
+    valid inner test2 first
+",
+}
+`;
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 8`] = `
+Object {
+  "length": 64,
+  "name": "valid inner test3 1",
+  "position": 361,
+  "snapshot": "
+    valid inner test3 first
+",
+}
+`;
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 9`] = `
+Object {
+  "length": 66,
+  "name": "custom with custom names 1",
+  "position": 428,
+  "snapshot": "
+    custom anonymous 1
+",
+}
+`;
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 10`] = `
+Object {
+  "length": 71,
+  "name": "custom with custom names: custom 1",
+  "position": 635,
+  "snapshot": "
+    custom custom 1
+",
+}
+`;
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 11`] = `
+Object {
+  "length": 71,
+  "name": "custom with custom names: custom 2",
+  "position": 709,
+  "snapshot": "
+    custom custom 2
+",
+}
+`;
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 12`] = `
+Object {
+  "length": 66,
+  "name": "custom with custom names 2",
+  "position": 497,
+  "snapshot": "
+    custom anonymous 2
+",
+}
+`;
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 13`] = `
+Object {
+  "length": 79,
+  "name": "custom with custom names: custom2 1",
+  "position": 857,
+  "snapshot": "
+    custom custom second 1
+",
+}
+`;
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 14`] = `
+Object {
+  "length": 66,
+  "name": "custom with custom names 3",
+  "position": 566,
+  "snapshot": "
+    custom anonymous 3
+",
+}
+`;
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 15`] = `
+Object {
+  "length": 71,
+  "name": "custom with custom names: custom 3",
+  "position": 783,
+  "snapshot": "
+    custom custom 3
+",
+}
+`;
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 16`] = `
+Object {
+  "length": 79,
+  "name": "custom with custom names: custom2 2",
+  "position": 939,
+  "snapshot": "
+    custom custom second 2
+",
+}
+`;

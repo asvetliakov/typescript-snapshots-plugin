@@ -26,13 +26,14 @@
   },
   "homepage": "https://github.com/asvetliakov/typescript-snapshots-plugin#readme",
   "devDependencies": {
-    "@types/jest": "^21.1.5",
+    "@types/jest": "^22.2.3",
     "@types/mock-fs": "^3.6.30",
-    "@types/node": "^8.0.47",
-    "jest": "^21.2.1",
+    "@types/node": "^10.0.0",
+    "jest": "^22.4.3",
     "mock-fs": "^4.4.2",
-    "ts-jest": "^21.1.3",
-    "typescript": "^2.7.0-dev.20180113"
+    "ts-jest": "^22.4.4",
+    "typescript": "^2.8.3",
+    "typescript-snapshots-plugin": "^1.1.1"
   },
   "jest": {
     "testEnvironment": "node",
@@ -52,8 +53,7 @@
     ],
     "roots": [
       "<rootDir>/src"
-    ],
-    "mapCoverage": true
+    ]
   },
   "dependencies": {}
 }

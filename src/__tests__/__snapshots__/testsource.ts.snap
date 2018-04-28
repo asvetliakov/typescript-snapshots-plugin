@@ -1,0 +1,63 @@
+exports[`test 1`] = `
+    first test
+`;
+
+exports[`test2 1`] = `
+    second test
+`;
+
+exports[`a test2 1`] = `
+    a test2 first
+`;
+
+exports[`valid test1 1`] = `
+    valid test first
+`;
+
+exports[`valid test1 2`] = `
+    valid test second
+`;
+
+exports[`valid test1 3`] = `
+    valid test third
+`;
+
+exports[`valid inner test2 1`] = `
+    valid inner test2 first
+`;
+
+exports[`valid inner test3 1`] = `
+    valid inner test3 first
+`;
+
+exports[`custom with custom names 1`] = `
+    custom anonymous 1
+`;
+
+exports[`custom with custom names 2`] = `
+    custom anonymous 2
+`;
+
+exports[`custom with custom names 3`] = `
+    custom anonymous 3
+`;
+
+exports[`custom with custom names: custom 1`] = `
+    custom custom 1
+`;
+
+exports[`custom with custom names: custom 2`] = `
+    custom custom 2
+`;
+
+exports[`custom with custom names: custom 3`] = `
+    custom custom 3
+`;
+
+exports[`custom with custom names: custom2 1`] = `
+    custom custom second 1
+`;
+
+exports[`custom with custom names: custom2 2`] = `
+    custom custom second 2
+`;
