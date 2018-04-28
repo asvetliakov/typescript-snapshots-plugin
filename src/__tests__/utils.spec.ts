@@ -1,6 +1,6 @@
 import * as ts from "typescript";
 import { findNodeAtPosition, isMatchingCallExpression, isMatchingIdentifier, getParentTestBlocks, getCountOfIdentifiersInBlock, parseSnapshotFile } from "../utils";
-import { source } from "./testsource";
+import { source } from "./fixtures/testsource";
 
 const file = ts.createSourceFile("a.ts", source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
 
@@ -132,7 +132,7 @@ describe("getCountOfIdentifiersInBlock", () => {
             namedCalls: {},
         });
         expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 27, 18))).toEqual({
-            anonymousCalls: 2,
+            anonymousCalls: 3,
             namedCalls: {},
         });
         expect(getCountOfIdentifiersInBlock(ts as any, node!.parent!, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 28, 5))).toEqual({
@@ -192,11 +192,11 @@ describe("parseSnapshotFile", () => {
     const empty = ``;
 
     it("Returns empty array for empty snapshot", () => {
-        expect(parseSnapshotFile(ts as any, empty).length).toBe(0);
+        expect(parseSnapshotFile(ts as any, "test", empty).length).toBe(0);
     });
 
     it("Returns snapshot definitions", () => {
-        const res = parseSnapshotFile(ts as any, snapshot);
+        const res = parseSnapshotFile(ts as any, "test", snapshot);
         expect(res).toMatchSnapshot();
     });
 })

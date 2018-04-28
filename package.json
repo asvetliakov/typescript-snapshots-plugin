@@ -43,7 +43,8 @@
     },
     "testRegex": "(/__tests__/.*|.*\\.[Ff]?[Ss]pec)\\.(ts|tsx|js)$",
     "testPathIgnorePatterns": [
-      "/fixtures/"
+      "/fixtures/",
+      "/testsource/"
     ],
     "moduleFileExtensions": [
       "js",

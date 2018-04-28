@@ -2,9 +2,10 @@
 
 exports[`tryGetSnapshotForPosition Returns snapshot definition 1`] = `
 Object {
+  "file": "/testsource.ts.snap",
   "length": 38,
   "name": "test 1",
-  "position": 0,
+  "position": 684,
   "snapshot": "
     first test
 ",
@@ -13,9 +14,10 @@ Object {
 
 exports[`tryGetSnapshotForPosition Returns snapshot definition 2`] = `
 Object {
+  "file": "/testsource.ts.snap",
   "length": 40,
   "name": "test2 1",
-  "position": 41,
+  "position": 725,
   "snapshot": "
     second test
 ",
@@ -24,9 +26,10 @@ Object {
 
 exports[`tryGetSnapshotForPosition Returns snapshot definition 3`] = `
 Object {
+  "file": "/testsource.ts.snap",
   "length": 44,
   "name": "a test2 1",
-  "position": 84,
+  "position": 44,
   "snapshot": "
     a test2 first
 ",
@@ -35,9 +38,10 @@ Object {
 
 exports[`tryGetSnapshotForPosition Returns snapshot definition 4`] = `
 Object {
+  "file": "/testsource.ts.snap",
   "length": 51,
   "name": "valid test1 1",
-  "position": 131,
+  "position": 902,
   "snapshot": "
     valid test first
 ",
@@ -46,9 +50,10 @@ Object {
 
 exports[`tryGetSnapshotForPosition Returns snapshot definition 5`] = `
 Object {
+  "file": "/testsource.ts.snap",
   "length": 52,
   "name": "valid test1 2",
-  "position": 185,
+  "position": 956,
   "snapshot": "
     valid test second
 ",
@@ -57,9 +62,10 @@ Object {
 
 exports[`tryGetSnapshotForPosition Returns snapshot definition 6`] = `
 Object {
+  "file": "/testsource.ts.snap",
   "length": 51,
   "name": "valid test1 3",
-  "position": 240,
+  "position": 1011,
   "snapshot": "
     valid test third
 ",
@@ -68,9 +74,10 @@ Object {
 
 exports[`tryGetSnapshotForPosition Returns snapshot definition 7`] = `
 Object {
+  "file": "/testsource.ts.snap",
   "length": 64,
   "name": "valid inner test2 1",
-  "position": 294,
+  "position": 768,
   "snapshot": "
     valid inner test2 first
 ",
@@ -79,9 +86,10 @@ Object {
 
 exports[`tryGetSnapshotForPosition Returns snapshot definition 8`] = `
 Object {
+  "file": "/testsource.ts.snap",
   "length": 64,
   "name": "valid inner test3 1",
-  "position": 361,
+  "position": 835,
   "snapshot": "
     valid inner test3 first
 ",
@@ -90,9 +98,10 @@ Object {
 
 exports[`tryGetSnapshotForPosition Returns snapshot definition 9`] = `
 Object {
+  "file": "/testsource.ts.snap",
   "length": 66,
   "name": "custom with custom names 1",
-  "position": 428,
+  "position": 91,
   "snapshot": "
     custom anonymous 1
 ",
@@ -101,9 +110,10 @@ Object {
 
 exports[`tryGetSnapshotForPosition Returns snapshot definition 10`] = `
 Object {
+  "file": "/testsource.ts.snap",
   "length": 71,
   "name": "custom with custom names: custom 1",
-  "position": 635,
+  "position": 298,
   "snapshot": "
     custom custom 1
 ",
@@ -112,9 +122,10 @@ Object {
 
 exports[`tryGetSnapshotForPosition Returns snapshot definition 11`] = `
 Object {
+  "file": "/testsource.ts.snap",
   "length": 71,
   "name": "custom with custom names: custom 2",
-  "position": 709,
+  "position": 372,
   "snapshot": "
     custom custom 2
 ",
@@ -123,9 +134,10 @@ Object {
 
 exports[`tryGetSnapshotForPosition Returns snapshot definition 12`] = `
 Object {
+  "file": "/testsource.ts.snap",
   "length": 66,
   "name": "custom with custom names 2",
-  "position": 497,
+  "position": 160,
   "snapshot": "
     custom anonymous 2
 ",
@@ -134,9 +146,10 @@ Object {
 
 exports[`tryGetSnapshotForPosition Returns snapshot definition 13`] = `
 Object {
+  "file": "/testsource.ts.snap",
   "length": 79,
   "name": "custom with custom names: custom2 1",
-  "position": 857,
+  "position": 520,
   "snapshot": "
     custom custom second 1
 ",
@@ -145,9 +158,10 @@ Object {
 
 exports[`tryGetSnapshotForPosition Returns snapshot definition 14`] = `
 Object {
+  "file": "/testsource.ts.snap",
   "length": 66,
   "name": "custom with custom names 3",
-  "position": 566,
+  "position": 229,
   "snapshot": "
     custom anonymous 3
 ",
@@ -156,9 +170,10 @@ Object {
 
 exports[`tryGetSnapshotForPosition Returns snapshot definition 15`] = `
 Object {
+  "file": "/testsource.ts.snap",
   "length": 71,
   "name": "custom with custom names: custom 3",
-  "position": 783,
+  "position": 446,
   "snapshot": "
     custom custom 3
 ",
@@ -167,9 +182,10 @@ Object {
 
 exports[`tryGetSnapshotForPosition Returns snapshot definition 16`] = `
 Object {
+  "file": "/testsource.ts.snap",
   "length": 79,
   "name": "custom with custom names: custom2 2",
-  "position": 939,
+  "position": 602,
   "snapshot": "
     custom custom second 2
 ",

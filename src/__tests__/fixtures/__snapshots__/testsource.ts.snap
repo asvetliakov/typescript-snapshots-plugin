@@ -1,33 +1,7 @@
-exports[`test 1`] = `
-    first test
-`;
-
-exports[`test2 1`] = `
-    second test
-`;
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`a test2 1`] = `
     a test2 first
-`;
-
-exports[`valid test1 1`] = `
-    valid test first
-`;
-
-exports[`valid test1 2`] = `
-    valid test second
-`;
-
-exports[`valid test1 3`] = `
-    valid test third
-`;
-
-exports[`valid inner test2 1`] = `
-    valid inner test2 first
-`;
-
-exports[`valid inner test3 1`] = `
-    valid inner test3 first
 `;
 
 exports[`custom with custom names 1`] = `
@@ -60,4 +34,32 @@ exports[`custom with custom names: custom2 1`] = `
 
 exports[`custom with custom names: custom2 2`] = `
     custom custom second 2
+`;
+
+exports[`test 1`] = `
+    first test
+`;
+
+exports[`test2 1`] = `
+    second test
+`;
+
+exports[`valid inner test2 1`] = `
+    valid inner test2 first
+`;
+
+exports[`valid inner test3 1`] = `
+    valid inner test3 first
+`;
+
+exports[`valid test1 1`] = `
+    valid test first
+`;
+
+exports[`valid test1 2`] = `
+    valid test second
+`;
+
+exports[`valid test1 3`] = `
+    valid test third
 `;

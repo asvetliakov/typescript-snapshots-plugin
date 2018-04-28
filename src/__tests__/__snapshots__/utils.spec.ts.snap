@@ -43,12 +43,14 @@ exports[`getParentTestBlocks Returns last test block and all parent names 6`] = 
 exports[`parseSnapshotFile Returns snapshot definitions 1`] = `
 Array [
   Object {
+    "file": "test",
     "length": 22,
     "name": "abc",
     "position": 9,
     "snapshot": "abc",
   },
   Object {
+    "file": "test",
     "length": 53,
     "name": "abc",
     "position": 42,
@@ -58,12 +60,14 @@ Array [
         ",
   },
   Object {
+    "file": "test",
     "length": 28,
     "name": "bb",
     "position": 106,
     "snapshot": "abc",
   },
   Object {
+    "file": "test",
     "length": 19,
     "name": "def",
     "position": 145,

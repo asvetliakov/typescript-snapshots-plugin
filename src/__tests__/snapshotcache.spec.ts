@@ -1,30 +1,30 @@
 import * as ts from "typescript";
 import * as fsMock from "mock-fs";
-import { SnapshotCache } from "../snapshotcache";
+import { SnapshotResolver } from "../snapshotcache";
 import { parseSnapshotFile } from "../utils";
 jest.mock("../utils");
 
-let cache: SnapshotCache;
+let cache: SnapshotResolver;
 beforeEach(() => {
-    cache = new SnapshotCache(ts as any);
+    cache = new SnapshotResolver(ts as any);
 });
 
 afterEach(() => {
     fsMock.restore();
 })
 
-it("Returns empty array if file doesn't exist", () => {
+it("Returns undefined array if file doesn't exist", () => {
     fsMock({
-        "/abc/tt.ts.snap": ""
+        "/abc/__snapshots__/ab.ts.snap": ""
     });
 
-    expect(cache.parseSnapshot("/abc/dd.ts.snap")).toEqual([]);
+    expect(cache.getSnapshotForFile("/abc/dd.ts")).toBeUndefined();
     expect(parseSnapshotFile).not.toBeCalled();
 });
 
 it("Reads file, parses it and returns definitions", () => {
     fsMock({
-        "/abc/tt.ts.snap": fsMock.file({
+        "/abc/__snapshots__/tt.ts.snap": fsMock.file({
             mtime: new Date(2017, 10, 10, 10, 1, 1),
             content: "some content"
         })
@@ -33,16 +33,17 @@ it("Reads file, parses it and returns definitions", () => {
         "this is definition, not important for test"
     ]);
 
-    const def = cache.parseSnapshot("/abc/tt.ts.snap");
-    expect(def).toEqual([
-        "this is definition, not important for test"
-    ]);
-    expect(parseSnapshotFile).toBeCalledWith(ts, "some content");
+    const def = cache.getSnapshotForFile("/abc/tt.ts");
+    expect(def).toEqual({
+        file: "/abc/__snapshots__/tt.ts.snap",
+        definitions: ["this is definition, not important for test"]
+    });
+    expect(parseSnapshotFile).toBeCalledWith(ts, "/abc/__snapshots__/tt.ts.snap", "some content");
 });
 
 it("Returns definitions from cache if mtime of file is same", () => {
     fsMock({
-        "/abc/tt.ts.snap": fsMock.file({
+        "/abc/__snapshots__/tt.ts.snap": fsMock.file({
             mtime: new Date(2017, 10, 10, 10, 1, 1),
             content: "some content"
         })
@@ -51,19 +52,20 @@ it("Returns definitions from cache if mtime of file is same", () => {
         "this is definition, not important for test"
     ]);
 
-    cache.parseSnapshot("/abc/tt.ts.snap");
+    cache.getSnapshotForFile("/abc/tt.ts");
     (parseSnapshotFile as jest.Mock).mockReset();
 
-    const def = cache.parseSnapshot("/abc/tt.ts.snap");
-    expect(def).toEqual([
-        "this is definition, not important for test"
-    ]);
+    const def = cache.getSnapshotForFile("/abc/tt.ts");
+    expect(def).toEqual({
+        file: "/abc/__snapshots__/tt.ts.snap",
+        definitions: ["this is definition, not important for test"]
+    });
     expect(parseSnapshotFile).not.toBeCalled();
 });
 
 it("Re-parses file if mtime was changed", () => {
     fsMock({
-        "/abc/tt.ts.snap": fsMock.file({
+        "/abc/__snapshots__/tt.ts.snap": fsMock.file({
             mtime: new Date(2017, 10, 10, 10, 1, 1),
             content: "some content"
         })
@@ -72,16 +74,41 @@ it("Re-parses file if mtime was changed", () => {
         "this is definition, not important for test"
     ]);
 
-    cache.parseSnapshot("/abc/tt.ts.snap");
+    cache.getSnapshotForFile("/abc/tt.ts");
     (parseSnapshotFile as jest.Mock).mockReset();
 
     fsMock({
-        "/abc/tt.ts.snap": fsMock.file({
+        "/abc/__snapshots__/tt.ts.snap": fsMock.file({
             mtime: new Date(2017, 10, 10, 10, 1, 2),
             content: "another content"
         })
     });
 
-    cache.parseSnapshot("/abc/tt.ts.snap");
-    expect(parseSnapshotFile).toBeCalledWith(ts, "another content");
+    cache.getSnapshotForFile("/abc/tt.ts");
+    expect(parseSnapshotFile).toBeCalledWith(ts, "/abc/__snapshots__/tt.ts.snap", "another content");
+});
+
+it("Picks first available file when given multiple extensions", () => {
+    cache.extensions = [".story", ".snap"];
+    fsMock({
+        "/abc/__snapshots__/tt.ts.story": fsMock.file({
+            mtime: new Date(2017, 10, 10, 10, 1, 1),
+            content: "story content"
+        }),
+        "/abc/__snapshots__/tt.ts.snap": fsMock.file({
+            mtime: new Date(2017, 10, 10, 10, 1, 1),
+            content: "some content"
+        })
+    });
+    (parseSnapshotFile as jest.Mock).mockReturnValue([
+        "this is definition, not important for test"
+    ]);
+
+    const def = cache.getSnapshotForFile("/abc/tt.ts");
+    expect(def).toEqual({
+        file: "/abc/__snapshots__/tt.ts.story",
+        definitions: ["this is definition, not important for test"]
+    });
+    expect(parseSnapshotFile).toBeCalledWith(ts, "/abc/__snapshots__/tt.ts.story", "story content");
+
 });

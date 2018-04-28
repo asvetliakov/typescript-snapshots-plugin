@@ -25,7 +25,7 @@ Add to your tsconfig.json:
 **If you are using VScode, tell it to use your local project TS version instead the VSCode bundled one**
 
 ### Configuration
-In most cases you must be OK with default configuration. If it doesn't work for you, the plugin exposes two options:
+In most cases you must be OK with default configuration. If it doesn't work for you, the plugin exposes few options:
 
 **snapshotCallIdentifiers**
 List of snapshot matching call identifiers, such as ```toMatchSnapshot()```, default:
@@ -48,6 +48,13 @@ List of test call identifiers, such as ```it()```, or ```describe()```, default:
     "describe.skip",
     "context",
     "suite"
+```
+
+**snapshotFileExtensions**
+List of snapshot names extensions. These will be used to search the snapshot file for test path. First existing path wins, default:
+```json
+[ ".snap" ]
+
 ```
 
 To pass your values, add them in tsconfig.json:

@@ -140,6 +140,7 @@ export function getCountOfIdentifiersInBlock(
 }
 
 export interface SnapshotDefinition {
+    file: string;
     /**
      * Snapshot export name
      */
@@ -163,10 +164,11 @@ export interface SnapshotDefinition {
  *
  * @export
  * @param ts
+ * @param path
  * @param source
  * @returns
  */
-export function parseSnapshotFile(ts: typeof ts_module, source: string): SnapshotDefinition[] {
+export function parseSnapshotFile(ts: typeof ts_module, path: string, source: string): SnapshotDefinition[] {
     try {
         const file = ts.createSourceFile("temp.ts", source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
         const blocks: SnapshotDefinition[] = [];
@@ -179,6 +181,7 @@ export function parseSnapshotFile(ts: typeof ts_module, source: string): Snapsho
                 (ts.isStringLiteral(node.right) || ts.isNoSubstitutionTemplateLiteral(node.right))
             ) {
                 blocks.push({
+                    file: path,
                     name: node.left.argumentExpression.text,
                     snapshot: node.right.text,
                     position: node.getStart(),

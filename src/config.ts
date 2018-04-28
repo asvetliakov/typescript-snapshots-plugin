@@ -2,16 +2,21 @@ export interface Configuration {
     /**
      * Snapshot call identifiers, i.e. toMatchSnapshot, etc..
      */
-    snapshotCallIdentifies: string[];
+    snapshotCallIdentifiers: string[];
 
     /**
      * Test block identifiers, i.e. it/describe/context/etc...
      */
     testBlockIdentifiers: string[];
+
+    /**
+     * Snapshot file extensions
+     */
+    snapshotFileExtensions: string[];
 }
 
 export const defaultConfig: Configuration = {
-    snapshotCallIdentifies: [
+    snapshotCallIdentifiers: [
         "toMatchSnapshot",
         "toThrowErrorMatchingSnapshot"
     ],
@@ -25,5 +30,6 @@ export const defaultConfig: Configuration = {
         "describe.skip",
         "context",
         "suite"
-    ]
+    ],
+    snapshotFileExtensions: [".snap"],
 }
