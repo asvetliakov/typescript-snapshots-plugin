@@ -21,6 +21,9 @@ export const defaultConfig: Configuration = {
         "toThrowErrorMatchingSnapshot"
     ],
     testBlockIdentifiers: [
+        "test",
+        "test.only",
+        "test.skip",
         "it",
         "it.only",
         "it.skip",
