@@ -29,7 +29,7 @@ function init(modules: { typescript: typeof ts_module }) {
 
         for (const k in oldLS) {
             (proxy as any)[k] = function () {
-                return oldLS[k as keyof ts.LanguageService].apply(oldLS, arguments);
+                return oldLS[k as keyof ts.LanguageService]!.apply(oldLS, arguments);
             }
         }
 
@@ -38,9 +38,13 @@ function init(modules: { typescript: typeof ts_module }) {
          */
         proxy.getQuickInfoAtPosition = (fileName, position) => {
             const originalQuickInfo = oldLS.getQuickInfoAtPosition(fileName, position);
-            const sourceFile = oldLS.getProgram().getSourceFile(fileName);
+            const program = oldLS.getProgram();
+            if (!program) {
+                return originalQuickInfo;
+            }
+            const sourceFile = program.getSourceFile(fileName);
             const snapshotDef = tryGetSnapshotForPosition(ts, sourceFile, position, snapshotCache, config);
-            if (snapshotDef && originalQuickInfo) {
+            if (snapshotDef && originalQuickInfo && originalQuickInfo.displayParts) {
                 originalQuickInfo.displayParts.push({
                     kind: "method",
                     text: "\n" + snapshotDef.snapshot
@@ -54,7 +58,11 @@ function init(modules: { typescript: typeof ts_module }) {
          */
         proxy.getDefinitionAtPosition = (fileName, position) => {
             let prior = oldLS.getDefinitionAtPosition(fileName, position);
-            const sourceFile = oldLS.getProgram().getSourceFile(fileName);
+            const program = oldLS.getProgram();
+            if (!program) {
+                return prior;
+            }
+            const sourceFile = program.getSourceFile(fileName);
             const snapshotDef = tryGetSnapshotForPosition(ts, sourceFile, position, snapshotCache, config);
             if (snapshotDef) {
                 // LS can return undefined. Also need to preserve undefined in case if snapshot is not available
@@ -77,6 +85,40 @@ function init(modules: { typescript: typeof ts_module }) {
             return prior;
         }
 
+        proxy.getDefinitionAndBoundSpan = (fileName, position) => {
+            let prior = oldLS.getDefinitionAndBoundSpan(fileName, position);
+            const program = oldLS.getProgram();
+            if (!program) {
+                return prior;
+            }
+            const sourceFile = program.getSourceFile(fileName);
+            const snapshotDef = tryGetSnapshotForPosition(ts, sourceFile, position, snapshotCache, config);
+            if (snapshotDef) {
+                if (!prior) {
+                    prior = {
+                        definitions: [],
+                        // LS can without textSpan although it's required in type
+                        textSpan: undefined as any,
+                    }
+                }
+                prior.definitions = [
+                    ...(prior.definitions ? prior.definitions : []),
+                    {
+                        fileName: snapshotDef.file,
+                        name: snapshotDef.name,
+                        containerKind: ts.ScriptElementKind.moduleElement,
+                        containerName: "Snapshots",
+                        kind: ts.ScriptElementKind.variableElement,
+                        textSpan: {
+                            start: snapshotDef.position,
+                            length: snapshotDef.length,
+                        },
+                    }
+                ]
+            }
+            return prior;
+        }
+
 
         return proxy;
     }
@@ -91,7 +133,7 @@ function init(modules: { typescript: typeof ts_module }) {
             // TS 2.7, openFiles is Map of normalized paths (key is the full path, value is the project root path)
             openFiles.push(...project.projectService.openFiles.keys() as any);
         }
-        openFiles = openFiles.filter(f => !snapshotCache.extensions.find(ext => f.endsWith(ext)));
+        openFiles = openFiles.filter(f => !snapshotCache.extensions.find(ext => f.endsWith(ext))).filter(f => project.containsFile(f));
         const externalFiles = openFiles.map(file => snapshotCache.getAllPossiblePathsForFile(file))
             .reduce((all, paths) => all.concat(paths), [])
             .filter(f => project.projectService.host.fileExists(f));
