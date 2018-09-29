@@ -1,0 +1,30 @@
+{
+    "name": "snapshot-tools",
+    "description": "Helpful tools for snapshot testing",
+    "author": "Alexey Svetliakov <asvetliakov@teledini.com>",
+    "license": "MIT",
+    "version": "0.1.0",
+    "publisher": "asvetliakov",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/asvetliakov/typescript-snapshots-plugin"
+    },
+    "engines": {
+        "vscode": "^1.8.0"
+    },
+    "icon": "icon.png",
+    "categories": [
+        "Programming Languages",
+        "Other"
+    ],
+    "contributes": {
+        "typescriptServerPlugins": [
+            {
+                "name": "typescript-snapshots-plugin"
+            }
+        ]
+    },
+    "dependencies": {
+        "typescript-snapshots-plugin": "^1.4.0"
+    }
+}

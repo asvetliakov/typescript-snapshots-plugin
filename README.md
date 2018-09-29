@@ -60,7 +60,7 @@ List of snapshot names extensions. These will be used to search the snapshot fil
 **snapshotDir**
 Snapshot directory relative to the test file, default:
 ```json
-"__snapshot__"
+"__snapshots__"
 ```
 
 To pass your values, add them in tsconfig.json:
