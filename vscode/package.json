@@ -3,7 +3,7 @@
     "description": "Helpful tools for snapshot testing",
     "author": "Alexey Svetliakov <asvetliakov@teledini.com>",
     "license": "MIT",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "publisher": "asvetliakov",
     "repository": {
         "type": "git",
@@ -25,6 +25,6 @@
         ]
     },
     "dependencies": {
-        "typescript-snapshots-plugin": "^1.4.0"
+        "typescript-snapshots-plugin": "^1.4.1"
     }
 }
