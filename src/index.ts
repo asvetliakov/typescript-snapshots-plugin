@@ -101,8 +101,10 @@ function init(modules: { typescript: typeof ts_module }) {
                 if (!prior) {
                     prior = {
                         definitions: [],
-                        // LS can without textSpan although it's required in type
-                        textSpan: undefined as any,
+                        textSpan: {
+                            start: snapshotDef.position,
+                            length: snapshotDef.length,
+                        }
                     }
                 }
                 prior.definitions = [
