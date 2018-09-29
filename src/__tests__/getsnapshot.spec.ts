@@ -6,10 +6,10 @@ import { source } from "./fixtures/testsource";
 import { Configuration } from "../config";
 import { SnapshotDefinition } from "../utils";
 
-function cleanPathFromSnapshotDef(def: SnapshotDefinition): SnapshotDefinition {
+function cleanPathFromSnapshotDef(def: SnapshotDefinition | undefined): SnapshotDefinition {
     return {
-        ...def,
-        file: def.file.substr(def.file.lastIndexOf("/")),
+        ...def!,
+        file: def!.file.substr(def!.file.lastIndexOf("/")),
     };
 }
 
@@ -21,10 +21,11 @@ describe("tryGetSnapshotForPosition", () => {
         snapshotCallIdentifiers: ["toMatchSnapshot"],
         testBlockIdentifiers: ["it", "it.only", "describe"],
         snapshotFileExtensions: [".snap"],
+        snapshotDir: "__snapshots__",
     }
-    const testIdentifiers = [
-    ];
-    const snapshotIdentifiers = ["toMatchSnapshot"];
+    // const testIdentifiers = [
+    // ];
+    // const snapshotIdentifiers = ["toMatchSnapshot"];
 
     it("Returns undefined for invalid position", () => {
         expect(tryGetSnapshotForPosition(ts as any, file, 2000, cache, config)).toBeUndefined();

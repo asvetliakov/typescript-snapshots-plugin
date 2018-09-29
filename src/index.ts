@@ -9,6 +9,7 @@ function init(modules: { typescript: typeof ts_module }) {
     const config: Configuration = defaultConfig;
     const snapshotCache = new SnapshotResolver(ts);
     snapshotCache.extensions = defaultConfig.snapshotFileExtensions;
+    snapshotCache.dir = defaultConfig.snapshotDir;
 
 
     /**
@@ -25,6 +26,9 @@ function init(modules: { typescript: typeof ts_module }) {
         }
         if (info.config.snapshotFileExtensions) {
             snapshotCache.extensions = info.config.snapshotFileExtensions;
+        }
+        if (info.config.snapshotDir) {
+            snapshotCache.dir = info.config.snapshotDir;
         }
 
         for (const k in oldLS) {

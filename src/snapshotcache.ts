@@ -18,9 +18,10 @@ export interface SnapshotInfo {
  */
 export class SnapshotResolver {
     private _extensions: string[] = [".snap"];
+    private _dir: string = "__snapshots__"
     public constructor(
         private ts: typeof ts_module,
-        private cacheMap: Map<string, Cache> = new Map()
+        private cacheMap: Map<string, Cache> = new Map(),
     ) { }
 
     public set extensions(ext: string[]) {
@@ -31,6 +32,16 @@ export class SnapshotResolver {
     public get extensions(): string[] {
         return this._extensions;
     }
+
+    public set dir(d: string) {
+        this._dir = d;
+        this.cacheMap.clear();
+    }
+
+    public get dir(): string {
+        return this._dir;
+    }
+
 
     /**
      * Return snapshot definitions for given snapshot file name.
@@ -75,6 +86,6 @@ export class SnapshotResolver {
      * Return snapshot path for file
      */
     public getAllPossiblePathsForFile(filePath: string): string[] {
-        return this.extensions.map(ext => nodePath.dirname(filePath) + "/__snapshots__/" + nodePath.basename(filePath) + ext);
+        return this.extensions.map(ext => nodePath.join(nodePath.dirname(filePath), this.dir, nodePath.basename(filePath) + ext));
     }
 }

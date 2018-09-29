@@ -13,6 +13,11 @@ export interface Configuration {
      * Snapshot file extensions
      */
     snapshotFileExtensions: string[];
+
+    /**
+     * Relative directory to snapshot
+     */
+    snapshotDir: string;
 }
 
 export const defaultConfig: Configuration = {
@@ -35,4 +40,5 @@ export const defaultConfig: Configuration = {
         "suite"
     ],
     snapshotFileExtensions: [".snap"],
+    snapshotDir: "__snapshots__",
 }

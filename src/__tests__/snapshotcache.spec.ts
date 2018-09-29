@@ -110,5 +110,51 @@ it("Picks first available file when given multiple extensions", () => {
         definitions: ["this is definition, not important for test"]
     });
     expect(parseSnapshotFile).toBeCalledWith(ts, "/abc/__snapshots__/tt.ts.story", "story content");
-
 });
+
+it("Customizable snapshot directory", () => {
+    cache.dir = "__my__";
+    fsMock({
+        "/abc/__my__/tt.ts.snap": fsMock.file({
+            mtime: new Date(),
+            content: "some content"
+        }),
+        "/abc/__snapshots__/tt.ts.snap": fsMock.file({
+            mtime: new Date(),
+            content: "another content"
+        })
+    });
+    (parseSnapshotFile as jest.Mock).mockReturnValue([
+        "this is definition, not important for test"
+    ]);
+
+    let def = cache.getSnapshotForFile("/abc/tt.ts");
+    expect(def).toEqual({
+        file: "/abc/__my__/tt.ts.snap",
+        definitions: ["this is definition, not important for test"]
+    });
+    expect(parseSnapshotFile).toBeCalledWith(ts, "/abc/__my__/tt.ts.snap", "some content");
+
+    fsMock({
+        "/abc/tt.ts.snap": fsMock.file({
+            mtime: new Date(),
+            content: "some content"
+        }),
+    });
+    cache.dir = "";
+    (parseSnapshotFile as jest.Mock).mockClear();
+    def = cache.getSnapshotForFile("/abc/tt.ts");
+    expect(def).toEqual({
+        file: "/abc/tt.ts.snap",
+        definitions: ["this is definition, not important for test"]
+    });
+    expect(parseSnapshotFile).toBeCalledWith(ts, "/abc/tt.ts.snap", "some content");
+
+    cache.dir = "./";
+    (parseSnapshotFile as jest.Mock).mockClear();
+    def = cache.getSnapshotForFile("/abc/tt.ts");
+    expect(def).toEqual({
+        file: "/abc/tt.ts.snap",
+        definitions: ["this is definition, not important for test"]
+    });
+})
