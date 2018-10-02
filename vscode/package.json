@@ -3,7 +3,7 @@
     "description": "Helpful tools for snapshot testing",
     "author": "Alexey Svetliakov <asvetliakov@teledini.com>",
     "license": "MIT",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "publisher": "asvetliakov",
     "repository": {
         "type": "git",
@@ -18,6 +18,24 @@
         "Other"
     ],
     "contributes": {
+        "languages": [
+            {
+                "id": "jest-snapshot",
+                "extensions": [
+                    ".js.snap",
+                    ".jsx.snap",
+                    ".ts.snap",
+                    ".tsx.snap"
+                ]
+            }
+        ],
+        "grammars": [
+            {
+                "language": "jest-snapshot",
+                "scopeName": "source.jest.snap",
+                "path": "./syntaxes/jest-snapshot.tmLanguage"
+            }
+        ],
         "typescriptServerPlugins": [
             {
                 "name": "typescript-snapshots-plugin"
