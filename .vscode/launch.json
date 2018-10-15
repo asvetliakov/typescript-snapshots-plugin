@@ -4,6 +4,31 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+         {
+            "type": "node",
+            "request": "launch",
+            "protocol": "inspector",
+            "name": "Debug current test file",
+            "console": "internalConsole",
+            "internalConsoleOptions": "neverOpen",
+            "showAsyncStacks": true,
+            "cwd": "${workspaceRoot}",
+            "useWSL": true,
+            "port": 9229,
+            "runtimeArgs": [
+                "--inspect-brk=9229",
+                "./node_modules/jest/bin/jest.js",
+                "--runTestsByPath",
+                "--runInBand",
+                "${relativeFile}",
+            ],
+            "skipFiles": [
+                "<node_internals>/**",
+                "node_modules/**"
+            ],
+            "sourceMaps": true,
+            "smartStep": true
+        },
         {
             "name": "Launch Extension",
             "type": "extensionHost",

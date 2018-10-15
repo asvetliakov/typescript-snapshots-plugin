@@ -1,8 +1,29 @@
 import * as ts from "typescript";
+import * as path from "path";
 import { findNodeAtPosition, isMatchingCallExpression, isMatchingIdentifier, getParentTestBlocks, getCountOfIdentifiersInBlock, parseSnapshotFile } from "../utils";
 import { source } from "./fixtures/testsource";
 
 const file = ts.createSourceFile("a.ts", source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+const file2path = path.join(__dirname, "./fixtures/valid.ts");
+const fileConstantPath = path.join(__dirname, "./fixtures/testConstant.ts");
+const program = ts.createProgram({
+    options: {
+        target: ts.ScriptTarget.Latest,
+        noLib: true,
+        module: ts.ModuleKind.ES2015,
+        moduleResolution: ts.ModuleResolutionKind.NodeJs,
+    },
+    host: {
+        ...ts.createCompilerHost({
+            target: ts.ScriptTarget.Latest,
+            module: ts.ModuleKind.ES2015,
+            moduleResolution: ts.ModuleResolutionKind.NodeJs,
+            noLib: true,
+        }, true),
+    },
+    rootNames: [file2path, fileConstantPath],
+});
+const file2 = program.getSourceFile(file2path)
 
 describe("findNodeAtPosition", () => {
     it("Returns node at position", () => {
@@ -84,6 +105,31 @@ describe("getParentTestBlocks", () => {
         res = getParentTestBlocks(ts as any, file, ["describe", "it"], ts.getPositionOfLineAndCharacter(file, 27, 27));
         expect(res).toBeDefined();
         expect(res!.blockNames).toEqual(["valid", "test1"]);
+        expect(res!.lastNode.getText()).toMatchSnapshot();
+
+        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 4, 5), program);
+        expect(res).toBeDefined();
+        expect(res!.blockNames).toEqual(["via constant"]);
+        expect(res!.lastNode.getText()).toMatchSnapshot();
+
+        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 8, 8), program);
+        expect(res).toBeDefined();
+        expect(res!.blockNames).toEqual(["substitution via constant"]);
+        expect(res!.lastNode.getText()).toMatchSnapshot();
+
+        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 15, 7), program);
+        expect(res).toBeDefined();
+        expect(res!.blockNames).toEqual(["another via constant, 5, via constant"]);
+        expect(res!.lastNode.getText()).toMatchSnapshot();
+
+        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 19, 5), program);
+        expect(res).toBeDefined();
+        expect(res!.blockNames).toEqual(["exported constant"]);
+        expect(res!.lastNode.getText()).toMatchSnapshot();
+
+        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 23, 5), program);
+        expect(res).toBeDefined();
+        expect(res!.blockNames).toEqual(["imported exported constant"]);
         expect(res!.lastNode.getText()).toMatchSnapshot();
     });
 });

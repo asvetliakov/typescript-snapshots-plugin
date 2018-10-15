@@ -20,6 +20,7 @@ export function tryGetSnapshotForPosition(
     position: number,
     snapshotCache: SnapshotResolver,
     config: Configuration,
+    program?: ts_module.Program,
 ): SnapshotDefinition | undefined {
     if (!sourceFile) {
         return;
@@ -29,7 +30,7 @@ export function tryGetSnapshotForPosition(
         if (node && isMatchingIdentifier(ts, node, config.snapshotCallIdentifiers) && node.parent && node.parent.parent && ts.isCallExpression(node.parent.parent)) {
 
             // avoid reading snapshot file until there will be real case for snapshot existing, i.e. blockInfo not undefined
-            const blockInfo = getParentTestBlocks(ts, sourceFile, config.testBlockIdentifiers, node.getStart(sourceFile));
+            const blockInfo = getParentTestBlocks(ts, sourceFile, config.testBlockIdentifiers, node.getStart(sourceFile), program);
             if (blockInfo) {
                 const snapshotInfo = snapshotCache.getSnapshotForFile(sourceFile.fileName);
                 if (!snapshotInfo || !snapshotInfo.definitions.length) {

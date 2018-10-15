@@ -40,6 +40,36 @@ exports[`getParentTestBlocks Returns last test block and all parent names 6`] = 
     })"
 `;
 
+exports[`getParentTestBlocks Returns last test block and all parent names 7`] = `
+"it(a, () => {
+    expect(a).toBe(1);
+})"
+`;
+
+exports[`getParentTestBlocks Returns last test block and all parent names 8`] = `
+"it(\`substitution \${a}\`, () => {
+    expect(a).toBe(1);
+})"
+`;
+
+exports[`getParentTestBlocks Returns last test block and all parent names 9`] = `
+"it(\`another \${a}, \${b}, \${c}\`, () => {
+    expect(a).toBe(1);
+})"
+`;
+
+exports[`getParentTestBlocks Returns last test block and all parent names 10`] = `
+"it(Test, () => {
+    expect(a).toBe(1);
+})"
+`;
+
+exports[`getParentTestBlocks Returns last test block and all parent names 11`] = `
+"it(\`imported \${Test}\`, () => {
+    expect(a).toBe(1);
+})"
+`;
+
 exports[`parseSnapshotFile Returns snapshot definitions 1`] = `
 Array [
   Object {

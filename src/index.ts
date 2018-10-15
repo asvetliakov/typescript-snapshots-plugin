@@ -42,12 +42,13 @@ function init(modules: { typescript: typeof ts_module }) {
          */
         proxy.getQuickInfoAtPosition = (fileName, position) => {
             const originalQuickInfo = oldLS.getQuickInfoAtPosition(fileName, position);
-            const program = oldLS.getProgram();
+            const program = info.project.getLanguageService().getProgram();
+            // const program = oldLS.getProgram();
             if (!program) {
                 return originalQuickInfo;
             }
             const sourceFile = program.getSourceFile(fileName);
-            const snapshotDef = tryGetSnapshotForPosition(ts, sourceFile, position, snapshotCache, config);
+            const snapshotDef = tryGetSnapshotForPosition(ts, sourceFile, position, snapshotCache, config, program);
             if (snapshotDef && originalQuickInfo && originalQuickInfo.displayParts) {
                 originalQuickInfo.displayParts.push({
                     kind: "method",
@@ -62,12 +63,12 @@ function init(modules: { typescript: typeof ts_module }) {
          */
         proxy.getDefinitionAtPosition = (fileName, position) => {
             let prior = oldLS.getDefinitionAtPosition(fileName, position);
-            const program = oldLS.getProgram();
+            const program = info.project.getLanguageService().getProgram();
             if (!program) {
                 return prior;
             }
             const sourceFile = program.getSourceFile(fileName);
-            const snapshotDef = tryGetSnapshotForPosition(ts, sourceFile, position, snapshotCache, config);
+            const snapshotDef = tryGetSnapshotForPosition(ts, sourceFile, position, snapshotCache, config, program);
             if (snapshotDef) {
                 // LS can return undefined. Also need to preserve undefined in case if snapshot is not available
                 if (!prior) {
@@ -91,12 +92,12 @@ function init(modules: { typescript: typeof ts_module }) {
 
         proxy.getDefinitionAndBoundSpan = (fileName, position) => {
             let prior = oldLS.getDefinitionAndBoundSpan(fileName, position);
-            const program = oldLS.getProgram();
+            const program = info.project.getLanguageService().getProgram();
             if (!program) {
                 return prior;
             }
             const sourceFile = program.getSourceFile(fileName);
-            const snapshotDef = tryGetSnapshotForPosition(ts, sourceFile, position, snapshotCache, config);
+            const snapshotDef = tryGetSnapshotForPosition(ts, sourceFile, position, snapshotCache, config, program);
             if (snapshotDef) {
                 if (!prior) {
                     prior = {

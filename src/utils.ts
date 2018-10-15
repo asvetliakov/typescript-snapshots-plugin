@@ -75,16 +75,57 @@ export interface TestBlockInfo {
  * @param lookupUntil
  * @returns
  */
-export function getParentTestBlocks(ts: typeof ts_module, sourceFile: ts.SourceFile, testBlockIdentifiers: string[], lookupUntil: number): TestBlockInfo | undefined {
+export function getParentTestBlocks(
+    ts: typeof ts_module,
+    sourceFile: ts.SourceFile,
+    testBlockIdentifiers: string[],
+    lookupUntil: number,
+    program?: ts_module.Program,
+): TestBlockInfo | undefined {
     const blocks: string[] = [];
     let lastBlockNode: ts.Node | undefined;
     function find(node: ts.Node): void {
         if (lookupUntil >= node.getStart() && lookupUntil <= node.getEnd()) {
             if (isMatchingCallExpression(ts, node, testBlockIdentifiers) && node.arguments.length >= 1) {
-                if (ts.isStringLiteral(node.arguments[0]) || ts.isNoSubstitutionTemplateLiteral(node.arguments[0])) {
+                const arg = node.arguments[0];
+                if (ts.isStringLiteral(arg) || ts.isNoSubstitutionTemplateLiteral(arg)) {
                     lastBlockNode = node;
-                    blocks.push((node.arguments[0] as ts_module.StringLiteral).text);
+                    blocks.push(arg.text);
                     ts.forEachChild(node, find);
+                } else if (ts.isIdentifier(arg) && program) {
+                    const typeChecker = program.getTypeChecker();
+                    const type = typeChecker.getTypeAtLocation(arg);
+                    if (type && (type.getFlags() & ts.TypeFlags.StringLiteral)) {
+                        lastBlockNode = node;
+                        blocks.push((type as ts.StringLiteralType).value);
+                        ts.forEachChild(node, find);
+                    }
+                } else if (ts.isTemplateExpression(arg) && program) {
+                    // try to resolve template literal
+                    let blockName = arg.head.text;
+                    let allResolved = true;
+                    const typeChecker = program.getTypeChecker();
+                    // const type = typeChecker.getTypeAtLocation(arg);
+                    for (const span of arg.templateSpans) {
+                        if (ts.isIdentifier(span.expression)) {
+                            const spanType = typeChecker.getTypeAtLocation(span.expression);
+                            if (spanType && (spanType.getFlags() & ts.TypeFlags.StringLiteral | ts.TypeFlags.NumberLiteral)) {
+                                const literal = span.literal.text;
+                                blockName += (spanType as ts.StringLiteralType | ts.NumberLiteralType).value + literal;
+                            } else {
+                                allResolved = false;
+                                break;
+                            }
+                        } else {
+                            allResolved = false;
+                            break;
+                        }
+                    }
+                    if (allResolved) {
+                        lastBlockNode = node;
+                        blocks.push(blockName);
+                        ts.forEachChild(node, find);
+                    }
                 }
             } else {
                 ts.forEachChild(node, find);
