@@ -49,11 +49,25 @@ function init(modules: { typescript: typeof ts_module }) {
             }
             const sourceFile = program.getSourceFile(fileName);
             const snapshotDef = tryGetSnapshotForPosition(ts, sourceFile, position, snapshotCache, config, program);
-            if (snapshotDef && originalQuickInfo && originalQuickInfo.displayParts) {
-                originalQuickInfo.displayParts.push({
-                    kind: "method",
-                    text: "\n" + snapshotDef.snapshot
-                });
+            if (snapshotDef) {
+                return {
+                    kind: ts.ScriptElementKind.string,
+                    kindModifiers: "",
+                    documentation: originalQuickInfo ? originalQuickInfo.documentation : undefined,
+                    textSpan: originalQuickInfo ? {
+                        start: originalQuickInfo.textSpan.start,
+                        length: originalQuickInfo.textSpan.length,
+                    } : {
+                        start: snapshotDef.position,
+                        length: snapshotDef.length,
+                    },
+                    displayParts: [
+                        {
+                            kind: ts.ScriptElementKind.string,
+                            text: snapshotDef.snapshot.trim(),
+                        }
+                    ]
+                };
             }
             return originalQuickInfo;
         }
@@ -109,7 +123,6 @@ function init(modules: { typescript: typeof ts_module }) {
                     }
                 }
                 prior.definitions = [
-                    ...(prior.definitions ? prior.definitions : []),
                     {
                         fileName: snapshotDef.file,
                         name: snapshotDef.name,
@@ -120,7 +133,8 @@ function init(modules: { typescript: typeof ts_module }) {
                             start: snapshotDef.position,
                             length: snapshotDef.length,
                         },
-                    }
+                    },
+                    ...(prior.definitions ? prior.definitions : []),
                 ]
             }
             return prior;
