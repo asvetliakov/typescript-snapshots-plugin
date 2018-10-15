@@ -1,4 +1,5 @@
 import { Test } from "./testConstant";
+import * as Constants from "./testConstant";
 
 const a = "via constant";
 it(a, () => {
@@ -23,5 +24,9 @@ it(Test, () => {
 it(`imported ${Test}`, () => {
     expect(a).toBe(1);
 });
+
+it(`Import star: ${Constants.Test}`, () => {
+    expect(a).toBe(1);
+})
 
 declare function it(...args: any[]): any;

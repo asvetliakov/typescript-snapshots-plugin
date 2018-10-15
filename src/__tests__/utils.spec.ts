@@ -107,29 +107,34 @@ describe("getParentTestBlocks", () => {
         expect(res!.blockNames).toEqual(["valid", "test1"]);
         expect(res!.lastNode.getText()).toMatchSnapshot();
 
-        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 4, 5), program);
+        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 5, 5), program);
         expect(res).toBeDefined();
         expect(res!.blockNames).toEqual(["via constant"]);
         expect(res!.lastNode.getText()).toMatchSnapshot();
 
-        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 8, 8), program);
+        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 9, 8), program);
         expect(res).toBeDefined();
         expect(res!.blockNames).toEqual(["substitution via constant"]);
         expect(res!.lastNode.getText()).toMatchSnapshot();
 
-        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 15, 7), program);
+        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 16, 7), program);
         expect(res).toBeDefined();
         expect(res!.blockNames).toEqual(["another via constant, 5, via constant"]);
         expect(res!.lastNode.getText()).toMatchSnapshot();
 
-        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 19, 5), program);
+        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 20, 5), program);
         expect(res).toBeDefined();
         expect(res!.blockNames).toEqual(["exported constant"]);
         expect(res!.lastNode.getText()).toMatchSnapshot();
 
-        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 23, 5), program);
+        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 24, 5), program);
         expect(res).toBeDefined();
         expect(res!.blockNames).toEqual(["imported exported constant"]);
+        expect(res!.lastNode.getText()).toMatchSnapshot();
+
+        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 28, 5), program);
+        expect(res).toBeDefined();
+        expect(res!.blockNames).toEqual(["Import star: exported constant"]);
         expect(res!.lastNode.getText()).toMatchSnapshot();
     });
 });

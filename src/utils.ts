@@ -92,7 +92,7 @@ export function getParentTestBlocks(
                     lastBlockNode = node;
                     blocks.push(arg.text);
                     ts.forEachChild(node, find);
-                } else if (ts.isIdentifier(arg) && program) {
+                } else if ((ts.isIdentifier(arg) || ts.isPropertyAccessExpression(arg)) && program) {
                     const typeChecker = program.getTypeChecker();
                     const type = typeChecker.getTypeAtLocation(arg);
                     if (type && (type.getFlags() & ts.TypeFlags.StringLiteral)) {
@@ -107,7 +107,7 @@ export function getParentTestBlocks(
                     const typeChecker = program.getTypeChecker();
                     // const type = typeChecker.getTypeAtLocation(arg);
                     for (const span of arg.templateSpans) {
-                        if (ts.isIdentifier(span.expression)) {
+                        if (ts.isIdentifier(span.expression) || ts.isPropertyAccessExpression(span.expression)) {
                             const spanType = typeChecker.getTypeAtLocation(span.expression);
                             if (spanType && (spanType.getFlags() & ts.TypeFlags.StringLiteral | ts.TypeFlags.NumberLiteral)) {
                                 const literal = span.literal.text;

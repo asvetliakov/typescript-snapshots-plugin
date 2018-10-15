@@ -70,6 +70,12 @@ exports[`getParentTestBlocks Returns last test block and all parent names 11`] =
 })"
 `;
 
+exports[`getParentTestBlocks Returns last test block and all parent names 12`] = `
+"it(\`Import star: \${Constants.Test}\`, () => {
+    expect(a).toBe(1);
+})"
+`;
+
 exports[`parseSnapshotFile Returns snapshot definitions 1`] = `
 Array [
   Object {
