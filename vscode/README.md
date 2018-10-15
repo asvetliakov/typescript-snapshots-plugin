@@ -9,6 +9,9 @@ Language service support for viewing/navigating to your test snapshots
 ### Navigating to snapshot (Go to definition):
 ![navigation](/images/navigating.gif)
 
+### Dynamically constructed test names (Constants only)
+![dynamic](/images/dynamic.png)
+
 ## Configuration
 You can configure various plugin settings in ```tsconfig.json/jsconfig.json``` file:
 ```json

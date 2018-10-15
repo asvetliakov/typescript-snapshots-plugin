@@ -9,7 +9,7 @@ Language service support for viewing/navigating to your test snapshots
 ### Navigation to snapshot (Go to definition):
 ![navigation](/images/navigating.gif)
 
-### Resolving constants in test blocks:
+### Dynamically constructed test names (Constants only)
 ![dynamic](/images/dynamic.png)
 
 ### Installation
