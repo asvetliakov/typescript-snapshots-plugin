@@ -109,7 +109,7 @@ export function getParentTestBlocks(
                     for (const span of arg.templateSpans) {
                         if (ts.isIdentifier(span.expression) || ts.isPropertyAccessExpression(span.expression)) {
                             const spanType = typeChecker.getTypeAtLocation(span.expression);
-                            if (spanType && (spanType.getFlags() & ts.TypeFlags.StringLiteral | ts.TypeFlags.NumberLiteral)) {
+                            if (spanType && (spanType.getFlags() & (ts.TypeFlags.StringLiteral | ts.TypeFlags.NumberLiteral))) {
                                 const literal = span.literal.text;
                                 blockName += (spanType as ts.StringLiteralType | ts.NumberLiteralType).value + literal;
                             } else {
