@@ -6,8 +6,11 @@ Language service support for viewing/navigating to your test snapshots
 ### Snapshot content on quick info (hover):
 ![quickinfo](/images/quickinfo.gif)
 
-### Navigating to snapshot (Go to definition):
+### Navigation to snapshot (Go to definition):
 ![navigation](/images/navigating.gif)
+
+### Resolving constants in test blocks:
+![dynamic](/images/dynamic.png)
 
 ### Installation
 
