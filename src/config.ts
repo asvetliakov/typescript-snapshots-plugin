@@ -18,6 +18,19 @@ export interface Configuration {
      * Relative directory to snapshot
      */
     snapshotDir: string;
+    /**
+     * Instead returning snapshot content in displayParts[] of protocol,
+     * return it in tags[] prefixed with markdown ```jsx ```. VSCode supports markdown
+     * tags & highligting so hover will look slightly better
+     */
+    useJSTagsForSnapshotHover: boolean;
+    /**
+     * Try to extract and format css declarations from snapshots (e.g. from styled-components),
+     * and put them into separate js tag for proper syntax highlighting. Applicable only when
+     * useJSTagsForSnapshotHover is true. Default true.
+     * Note: vscode doesn't render correctly both css + jsx in separate tags, so this option doesn't do anything now
+     */
+    extractCSSForJSTag: boolean;
 }
 
 export const defaultConfig: Configuration = {
@@ -41,4 +54,6 @@ export const defaultConfig: Configuration = {
     ],
     snapshotFileExtensions: [".snap"],
     snapshotDir: "__snapshots__",
+    useJSTagsForSnapshotHover: false,
+    extractCSSForJSTag: true,
 }

@@ -1,5 +1,6 @@
 import * as ts_module from "typescript/lib/tsserverlibrary";
 
+const EXTRACT_CSS_REGEX = new RegExp(/^(\s*[\.@>][\w0-1-:\s\(\)>\.&]+{(?:(?:.|\n|\r)*?)}(?:\n|\r|})*)/gm);
 
 /**
  * Find closest node at given position
@@ -237,4 +238,17 @@ export function parseSnapshotFile(ts: typeof ts_module, path: string, source: st
     } catch {
         return [];
     }
+}
+
+export function formatSnapshot(text: string, extractCss: boolean = false): Array<{ type: "css" | "jsx"; text: string }> {
+    const result: any[] = [];
+    if (extractCss) {
+        const cssRes = text.match(EXTRACT_CSS_REGEX);
+        if (cssRes) {
+            result.push(({ type: "css", text: cssRes.join("\n").trim() }));
+            text = text.replace(EXTRACT_CSS_REGEX, "");
+        }
+    }
+    result.push({ type: "jsx", text: text.trim() });
+    return result;
 }

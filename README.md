@@ -66,6 +66,10 @@ Snapshot directory relative to the test file, default:
 "__snapshots__"
 ```
 
+**useJSTagsForSnapshotHover**
+Setting to true will render snapshot within fake jsdoc definition block. Since VSCode hover jsdoc supports markdown \`\`\`syntax\`\`\` the snapshot in hover widget will have slightly better syntax coloring. If you're using VSCode you may want to enable this, otherwise leave as false. Default:
+```false```
+
 To pass your values, add them in tsconfig.json:
 ```json
     "plugins": [{

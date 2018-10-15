@@ -2,6 +2,7 @@ import * as ts_module from "typescript/lib/tsserverlibrary";
 import { defaultConfig, Configuration } from "./config";
 import { SnapshotResolver } from "./snapshotcache";
 import { tryGetSnapshotForPosition } from "./getsnapshot";
+import { formatSnapshot } from "./utils";
 
 
 function init(modules: { typescript: typeof ts_module }) {
@@ -30,6 +31,12 @@ function init(modules: { typescript: typeof ts_module }) {
         if (info.config.snapshotDir) {
             snapshotCache.dir = info.config.snapshotDir;
         }
+        if (typeof info.config.useJSTagsForSnapshotHover !== "undefined") {
+            config.useJSTagsForSnapshotHover = info.config.useJSTagsForSnapshotHover;
+        }
+        if (typeof info.config.extractCSSForJSTag !== "undefined") {
+            config.extractCSSForJSTag = info.config.extractCSSForJSTag;
+        }
 
         for (const k in oldLS) {
             (proxy as any)[k] = function () {
@@ -54,6 +61,13 @@ function init(modules: { typescript: typeof ts_module }) {
                     kind: ts.ScriptElementKind.string,
                     kindModifiers: "",
                     documentation: originalQuickInfo ? originalQuickInfo.documentation : undefined,
+                    tags: config.useJSTagsForSnapshotHover
+                        // looks like the hover widget is screwed up when using both css + jsx
+                        ? formatSnapshot(snapshotDef.snapshot.trim(), /*config.extractCSSForJSTag*/ false).map(def => ({
+                            name: def.type === "css" ? "CSS" : snapshotDef.name,
+                            text: def.type === "css" ? "```css\n" : "```jsx\n" + def.text + "```\n",
+                        }))
+                        : undefined,
                     textSpan: originalQuickInfo ? {
                         start: originalQuickInfo.textSpan.start,
                         length: originalQuickInfo.textSpan.length,
@@ -61,12 +75,12 @@ function init(modules: { typescript: typeof ts_module }) {
                         start: snapshotDef.position,
                         length: snapshotDef.length,
                     },
-                    displayParts: [
+                    displayParts: config.useJSTagsForSnapshotHover ? [] : [
                         {
                             kind: ts.ScriptElementKind.string,
                             text: snapshotDef.snapshot.trim(),
                         }
-                    ]
+                    ],
                 };
             }
             return originalQuickInfo;
