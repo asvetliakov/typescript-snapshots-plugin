@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getAllPossiblePathsForFile 1`] = `
+Array [
+  "/a/b/__snapshots__/c.spec.tsx.snap",
+  "/a/b/__snapshots__/c.spec.tsx.other",
+  "/a/b/__snapshots__/c.spec.js.snap",
+  "/a/b/__snapshots__/c.spec.js.other",
+]
+`;

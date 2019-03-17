@@ -158,3 +158,9 @@ it("Customizable snapshot directory", () => {
         definitions: ["this is definition, not important for test"]
     });
 })
+
+it("getAllPossiblePathsForFile", () => {
+    cache.extensions = [".snap", ".other"];
+    const files = cache.getAllPossiblePathsForFile("/a/b/c.spec.tsx");
+    expect(files).toMatchSnapshot();
+});

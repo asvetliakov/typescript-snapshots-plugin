@@ -86,6 +86,10 @@ export class SnapshotResolver {
      * Return snapshot path for file
      */
     public getAllPossiblePathsForFile(filePath: string): string[] {
-        return this.extensions.map(ext => nodePath.join(nodePath.dirname(filePath), this.dir, nodePath.basename(filePath) + ext));
+        return [
+            ...this.extensions.map(ext => nodePath.join(nodePath.dirname(filePath), this.dir, nodePath.basename(filePath) + ext)),
+            // include js.${ext} too, refs #11
+            ...this.extensions.map(ext => nodePath.join(nodePath.dirname(filePath), this.dir, nodePath.basename(filePath, nodePath.extname(filePath)) + ".js" + ext)),
+        ];
     }
 }
