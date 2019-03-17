@@ -1,3 +1,7 @@
+### [0.3.0]
+- Support concatenating test block names, e.g. it("a" + "b")
+- Support snapshot files with different basefile extension, e.g: ```a.spec.ts -> ./__snapshots__/a.spec.js.snap```
+
 ### [0.2.2]
 - Return only snapshot when hovering
 
