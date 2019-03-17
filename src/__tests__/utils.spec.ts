@@ -136,6 +136,21 @@ describe("getParentTestBlocks", () => {
         expect(res).toBeDefined();
         expect(res!.blockNames).toEqual(["Import star: exported constant"]);
         expect(res!.lastNode.getText()).toMatchSnapshot();
+
+        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 32, 5), program);
+        expect(res).toBeDefined();
+        expect(res!.blockNames).toEqual(["expa5"]);
+        expect(res!.lastNode.getText()).toMatchSnapshot();
+
+        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 36, 5), program);
+        expect(res).toBeDefined();
+        expect(res!.blockNames).toEqual(["exp multiline abc def"]);
+        expect(res!.lastNode.getText()).toMatchSnapshot();
+
+        res = getParentTestBlocks(ts as any, file2!, ["describe", "it"], ts.getPositionOfLineAndCharacter(file2!, 43, 5), program);
+        expect(res).toBeDefined();
+        expect(res!.blockNames).toEqual(["exp exported constant via constant"]);
+        expect(res!.lastNode.getText()).toMatchSnapshot();
     });
 });
 

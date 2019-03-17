@@ -76,6 +76,30 @@ exports[`getParentTestBlocks Returns last test block and all parent names 12`] =
 })"
 `;
 
+exports[`getParentTestBlocks Returns last test block and all parent names 13`] = `
+"it(\\"exp\\" + \\"a\\" + 5, () => {
+    expect(a).toBe(1);
+})"
+`;
+
+exports[`getParentTestBlocks Returns last test block and all parent names 14`] = `
+"it(\\"exp multiline \\" +
+    \`abc \` +
+    'def', () => {
+        expect(a).toBe(1);
+    }
+)"
+`;
+
+exports[`getParentTestBlocks Returns last test block and all parent names 15`] = `
+"it(\`exp \${Test} \` +
+    a,
+    () => {
+        expect(a).toBe(1);
+    }
+)"
+`;
+
 exports[`parseSnapshotFile Returns snapshot definitions 1`] = `
 Array [
   Object {

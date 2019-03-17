@@ -29,4 +29,22 @@ it(`Import star: ${Constants.Test}`, () => {
     expect(a).toBe(1);
 })
 
+it("exp" + "a" + 5, () => {
+    expect(a).toBe(1);
+});
+
+it("exp multiline " +
+    `abc ` +
+    'def', () => {
+        expect(a).toBe(1);
+    }
+);
+
+it(`exp ${Test} ` +
+    a,
+    () => {
+        expect(a).toBe(1);
+    }
+);
+
 declare function it(...args: any[]): any;

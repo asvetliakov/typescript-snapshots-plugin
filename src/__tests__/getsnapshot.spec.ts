@@ -22,6 +22,8 @@ describe("tryGetSnapshotForPosition", () => {
         testBlockIdentifiers: ["it", "it.only", "describe"],
         snapshotFileExtensions: [".snap"],
         snapshotDir: "__snapshots__",
+        useJSTagsForSnapshotHover: false,
+        extractCSSForJSTag: false,
     }
     // const testIdentifiers = [
     // ];

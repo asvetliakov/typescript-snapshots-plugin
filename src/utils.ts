@@ -55,6 +55,57 @@ export function isMatchingIdentifier(ts: typeof ts_module, node: ts_module.Node,
     return identifiers.indexOf(node.getText()) !== -1;
 }
 
+/**
+ * Resolve block name
+ *
+ * @param ts
+ * @param program
+ * @param arg
+ * @returns block name or undefined if block name couldn't be resolved
+ */
+function resolveBlockName(ts: typeof ts_module, program: ts.Program | undefined, arg: ts.Expression): string | undefined {
+    if (ts.isStringLiteral(arg) || ts.isNoSubstitutionTemplateLiteral(arg) || ts.isNumericLiteral(arg)) {
+        return arg.text;
+    } else if ((ts.isIdentifier(arg) || ts.isPropertyAccessExpression(arg)) && program) {
+        const typeChecker = program.getTypeChecker();
+        const type = typeChecker.getTypeAtLocation(arg);
+        if (type && (type.getFlags() & ts.TypeFlags.StringLiteral)) {
+            return (type as ts.StringLiteralType).value;
+        }
+    } else if (ts.isTemplateExpression(arg) && program) {
+        // try to resolve template literal
+        let blockName = arg.head.text;
+        let allResolved = true;
+        const typeChecker = program.getTypeChecker();
+        // const type = typeChecker.getTypeAtLocation(arg);
+        for (const span of arg.templateSpans) {
+            if (ts.isIdentifier(span.expression) || ts.isPropertyAccessExpression(span.expression)) {
+                const spanType = typeChecker.getTypeAtLocation(span.expression);
+                if (spanType && (spanType.getFlags() & (ts.TypeFlags.StringLiteral | ts.TypeFlags.NumberLiteral))) {
+                    const literal = span.literal.text;
+                    blockName += (spanType as ts.StringLiteralType | ts.NumberLiteralType).value + literal;
+                } else {
+                    allResolved = false;
+                    break;
+                }
+            } else {
+                allResolved = false;
+                break;
+            }
+        }
+        if (allResolved) {
+            return blockName;
+        }
+    } else if (ts.isBinaryExpression(arg)) {
+        const left = resolveBlockName(ts, program, arg.left);
+        const right = resolveBlockName(ts, program, arg.right);
+        if (left && right) {
+            return left + right;
+        }
+    }
+    return undefined;
+}
+
 export interface TestBlockInfo {
     /**
      * Parent + current test block names
@@ -89,44 +140,11 @@ export function getParentTestBlocks(
         if (lookupUntil >= node.getStart() && lookupUntil <= node.getEnd()) {
             if (isMatchingCallExpression(ts, node, testBlockIdentifiers) && node.arguments.length >= 1) {
                 const arg = node.arguments[0];
-                if (ts.isStringLiteral(arg) || ts.isNoSubstitutionTemplateLiteral(arg)) {
+                const blockName = resolveBlockName(ts, program, arg);
+                if (blockName) {
                     lastBlockNode = node;
-                    blocks.push(arg.text);
+                    blocks.push(blockName);
                     ts.forEachChild(node, find);
-                } else if ((ts.isIdentifier(arg) || ts.isPropertyAccessExpression(arg)) && program) {
-                    const typeChecker = program.getTypeChecker();
-                    const type = typeChecker.getTypeAtLocation(arg);
-                    if (type && (type.getFlags() & ts.TypeFlags.StringLiteral)) {
-                        lastBlockNode = node;
-                        blocks.push((type as ts.StringLiteralType).value);
-                        ts.forEachChild(node, find);
-                    }
-                } else if (ts.isTemplateExpression(arg) && program) {
-                    // try to resolve template literal
-                    let blockName = arg.head.text;
-                    let allResolved = true;
-                    const typeChecker = program.getTypeChecker();
-                    // const type = typeChecker.getTypeAtLocation(arg);
-                    for (const span of arg.templateSpans) {
-                        if (ts.isIdentifier(span.expression) || ts.isPropertyAccessExpression(span.expression)) {
-                            const spanType = typeChecker.getTypeAtLocation(span.expression);
-                            if (spanType && (spanType.getFlags() & (ts.TypeFlags.StringLiteral | ts.TypeFlags.NumberLiteral))) {
-                                const literal = span.literal.text;
-                                blockName += (spanType as ts.StringLiteralType | ts.NumberLiteralType).value + literal;
-                            } else {
-                                allResolved = false;
-                                break;
-                            }
-                        } else {
-                            allResolved = false;
-                            break;
-                        }
-                    }
-                    if (allResolved) {
-                        lastBlockNode = node;
-                        blocks.push(blockName);
-                        ts.forEachChild(node, find);
-                    }
                 }
             } else {
                 ts.forEachChild(node, find);
