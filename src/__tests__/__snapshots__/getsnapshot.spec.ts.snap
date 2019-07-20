@@ -191,3 +191,27 @@ Object {
 ",
 }
 `;
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 17`] = `
+Object {
+  "file": "/testsource.ts.snap",
+  "length": 51,
+  "name": "property matchers 1",
+  "position": 1065,
+  "snapshot": "
+    property 1
+",
+}
+`;
+
+exports[`tryGetSnapshotForPosition Returns snapshot definition 18`] = `
+Object {
+  "file": "/testsource.ts.snap",
+  "length": 66,
+  "name": "property matchers: Snapshot name 1",
+  "position": 1119,
+  "snapshot": "
+    property 2
+",
+}
+`;

@@ -181,7 +181,7 @@ export function getCountOfIdentifiersInBlock(
     function visit(node: ts.Node): void {
         if (ts.isIdentifier(node) && identifiers.indexOf(node.text) !== -1 && lookupUntil >= node.getStart()) {
             if (node.parent && node.parent.parent && ts.isCallExpression(node.parent.parent)) {
-                const customName = node.parent.parent.arguments[0];
+                const customName = node.parent.parent.arguments.find(arg => ts.isStringLiteralLike(arg));
                 if (customName && ts.isStringLiteralLike(customName)) {
                     const snapshotName = customName.text;
                     namedCalls[snapshotName] = namedCalls[snapshotName] ? namedCalls[snapshotName] + 1 : 1;

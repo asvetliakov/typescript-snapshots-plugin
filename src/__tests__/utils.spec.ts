@@ -238,6 +238,18 @@ describe("getCountOfIdentifiersInBlock", () => {
                 custom2: 2,
             },
         });
+
+        node = findNodeAtPosition(ts as any, file, ts.getPositionOfLineAndCharacter(file, 54, 2));
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 55, 16))).toEqual({
+            anonymousCalls: 1,
+            namedCalls: {},
+        });
+        expect(getCountOfIdentifiersInBlock(ts as any, node!.parent, ["toMatchSnapshot"], ts.getPositionOfLineAndCharacter(file, 56, 16))).toEqual({
+            anonymousCalls: 1,
+            namedCalls: {
+                "Snapshot name": 1
+            },
+        });
     });
 });
 

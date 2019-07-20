@@ -63,3 +63,11 @@ exports[`valid test1 2`] = `
 exports[`valid test1 3`] = `
     valid test third
 `;
+
+exports[`property matchers 1`] = `
+    property 1
+`;
+
+exports[`property matchers: Snapshot name 1`] = `
+    property 2
+`;

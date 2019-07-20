@@ -51,4 +51,9 @@ describe("custom", () => {
         expect(a).toMatchSnapshot("custom2");
     });
 })
+
+it("property matchers", () => {
+    expect(a).toMatchSnapshot({ a: expect.any(String) });
+    expect(a).toMatchSnapshot({ a: expect.any(String) }, "Snapshot name");
+});
 `;

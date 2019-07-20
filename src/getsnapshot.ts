@@ -38,7 +38,7 @@ export function tryGetSnapshotForPosition(
                 }
                 const snapshotCallsInBlock = getCountOfIdentifiersInBlock(ts, blockInfo.lastNode, config.snapshotCallIdentifiers, node.getStart(sourceFile));
 
-                const customName = node.parent.parent.arguments[0] && ts.isStringLiteralLike(node.parent.parent.arguments[0]) ? node.parent.parent.arguments[0] : undefined;
+                const customName = node.parent.parent.arguments.find(arg => ts.isStringLiteral(arg));
                 // let snapshotName = blockInfo.blockNames.join(" ") + " " + (snapshotCallsInBlock + 1);
                 let snapshotName = blockInfo.blockNames.join(" ");
                 if (customName) {

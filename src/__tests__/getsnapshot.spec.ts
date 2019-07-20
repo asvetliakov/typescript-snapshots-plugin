@@ -64,5 +64,9 @@ describe("tryGetSnapshotForPosition", () => {
         expect(cleanPathFromSnapshotDef(tryGetSnapshotForPosition(ts as any, file, ts.getPositionOfLineAndCharacter(file, 49, 21), cache, config))).toMatchSnapshot();
         expect(cleanPathFromSnapshotDef(tryGetSnapshotForPosition(ts as any, file, ts.getPositionOfLineAndCharacter(file, 50, 21), cache, config))).toMatchSnapshot();
 
+        // prop matchers
+        expect(cleanPathFromSnapshotDef(tryGetSnapshotForPosition(ts as any, file, ts.getPositionOfLineAndCharacter(file, 55, 16), cache, config))).toMatchSnapshot();
+        expect(cleanPathFromSnapshotDef(tryGetSnapshotForPosition(ts as any, file, ts.getPositionOfLineAndCharacter(file, 56, 16), cache, config))).toMatchSnapshot();
+
     });
 });
