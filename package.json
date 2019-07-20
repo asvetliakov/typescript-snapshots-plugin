@@ -1,6 +1,6 @@
 {
   "name": "typescript-snapshots-plugin",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Snapshots language service support for Typescript",
   "main": "out/index.js",
   "scripts": {
