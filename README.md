@@ -83,3 +83,11 @@ To pass your values, add them in tsconfig.json:
         ]
     }]
 ```
+
+**snapshotFileFlavor**
+Snapshot file flavor, default:
+```json
+"jest"
+```
+
+You can set it to `vitest` to support [vitest snapshots](https://vitest.dev/guide/snapshot.html).

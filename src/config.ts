@@ -31,6 +31,8 @@ export interface Configuration {
      * Note: vscode doesn't render correctly both css + jsx in separate tags, so this option doesn't do anything now
      */
     extractCSSForJSTag: boolean;
+
+    snapshotFileFlavor: 'jest' | 'vitest';
 }
 
 export const defaultConfig: Configuration = {
@@ -56,4 +58,5 @@ export const defaultConfig: Configuration = {
     snapshotDir: "__snapshots__",
     useJSTagsForSnapshotHover: false,
     extractCSSForJSTag: true,
+    snapshotFileFlavor: 'jest',
 }

@@ -37,6 +37,9 @@ function init(modules: { typescript: typeof ts_module }) {
         if (typeof info.config.extractCSSForJSTag !== "undefined") {
             config.extractCSSForJSTag = info.config.extractCSSForJSTag;
         }
+        if (typeof info.config.snapshotFileFlavor !== "undefined") {
+            config.snapshotFileFlavor = info.config.snapshotFileFlavor
+        }
 
         for (const k in oldLS) {
             (proxy as any)[k] = function () {

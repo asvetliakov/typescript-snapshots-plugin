@@ -40,9 +40,9 @@ export function tryGetSnapshotForPosition(
 
                 const customName = node.parent.parent.arguments.find(arg => ts.isStringLiteral(arg));
                 // let snapshotName = blockInfo.blockNames.join(" ") + " " + (snapshotCallsInBlock + 1);
-                let snapshotName = blockInfo.blockNames.join(" ");
+                let snapshotName = blockInfo.blockNames.join(config.snapshotFileFlavor === "vitest" ? " > " : " ");
                 if (customName) {
-                    snapshotName += ": " + (customName as ts.StringLiteralLike).text + " " + snapshotCallsInBlock.namedCalls[(customName as ts.StringLiteralLike).text];
+                    snapshotName += (config.snapshotFileFlavor === "vitest" ? " > " : ": ") + (customName as ts.StringLiteralLike).text + " " + snapshotCallsInBlock.namedCalls[(customName as ts.StringLiteralLike).text];
                 } else {
                     snapshotName += " " + (snapshotCallsInBlock.anonymousCalls);
                 }
